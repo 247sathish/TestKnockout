@@ -1,0 +1,16 @@
+<script>
+    const ns = {title:'namespace'};
+    //this.title=ns;
+    ns.foo = function (params) {
+        console.log(this);
+        console.log(arguments);
+        function inner(callback){
+            console.log(this);
+            callback();
+        }
+    inner(function(){
+        console.log(this.title);
+    }.bind(ns));
+}
+    ns.foo(1,"hi",2)
+</script>

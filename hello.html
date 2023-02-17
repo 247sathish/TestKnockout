@@ -1,0 +1,73 @@
+<html>
+    <head>
+    <title></title>
+    <script src="scripts/jquery-3.6.3.min.js"></script>
+    <script src="scripts/knockout-3.5.1.js"></script>
+    </head>
+    <body>
+        <div>
+            <h2>using Knockout</h2>
+            <span class="caption">Employee name: </span><span id="empName" data-bind="text: empName" class="text"></span><br />
+            <span class="caption">Employee Salary: </span><input id="empSal" data-bind="value: empSal" class="text" /><br />
+            <span class="caption">Employee Designation: </span><input id="empoyeeDesignation"
+                data-bind="value: empDesignation" class="text" /><br />
+            <input type="button" data-bind="click:saveToJson" value="Save to JSON" />
+            <textarea style="width:500px; height:100px" id="result" class="text" data-bind="value: textareadata"></textarea>
+            <div data-bind="html: details"></div>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                // viewmodel
+                var employee = {
+                    empName:ko.observable("sat") ,
+                    empSal: "9999999",
+                    empDesignation: "Technical Manager",
+                    textareadata: ko.observable()
+
+                };
+                employee.empName.subscribe(function (newvalue){
+                    console.log(newvalue);
+                });
+
+
+
+                //using Ajax
+                employee.saveToJson=function()
+                {
+                    const jsonData=ko.toJSON(employee);
+                    $.ajax("http://localhost:3000/employess",
+                    {
+                        type:"post",
+                        data:jsonData,
+                        headers:{
+                            "content-type":"application/json"
+                        }
+                    })
+                }
+
+
+
+            //     employee.saveToJson = function () {
+            //         const jsonData = ko.toJSON(employee);
+            //         console.log(employee.empName());
+            //         employee.empName("byeeee");
+            //    const promise= fetch("http://localhost:3000/employess",{
+            //         method:'post',
+            //         body:jsonData,
+            //         headers:{
+            //             'content-type':'application/json'
+            //         }
+            //         });
+            //         promise.then((data)=>{
+            //             employee.details("<h1>Success</h1>")
+            //             alert("Success");
+            //         })
+
+            //         $("#result").text(jsonData);
+            //     };
+                // initializa the bindings
+                ko.applyBindings(employee);
+            });
+        </script>
+    </body>
+</html>

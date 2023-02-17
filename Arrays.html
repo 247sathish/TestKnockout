@@ -1,0 +1,53 @@
+<html>
+    <head>
+    <title></title>
+    <script src="scripts/jquery-3.6.3.min.js"></script>
+    <script src="scripts/knockout-3.5.1.js"></script>
+    </head>
+    <body>
+        <div>
+            <h2>People Manager</h2>
+            <ul data-bind="foreach: Companies">
+                <li>
+                    <div>
+                        <span data-bind="text: name"> </span> has <span data-bind='text: employees().length'>&nbsp;</span> employees:
+                        <a href="#" type="button"data-bind='click: addEmployee'>Add Employee</a>                    
+                    </div>
+                    <ul data-bind="foreach: employees">
+                      <li><span data-bind="text: $data"/></li><span><a href="#"  type="button" data-bind='click: $parent.removeContact'>Delete</a> </span>
+                    </ul>
+                </li>
+            </ul>        
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                
+                var Company = function (name, employees) {
+
+                    var self = this;
+
+                    self.name = name;                
+                    self.employees = ko.observableArray(employees);
+                    self.addEmployee = function () {                   
+                        self.employees.push("**new employee**");
+                    }.bind(self);
+                   
+                    this.removeContact = function (employee) {
+                        self.employees.remove(employee);
+                    }.bind(this);
+                }
+
+
+                var viewModel = {                
+                    Companies: [
+                        new Company("CT Lien", ["Chris", "Che", "Tuan"]),
+                        new Company("CT Corp", ["Venky", "Tom", "Mike", "Dan"])                    
+                    ]};
+    
+                ko.applyBindings(viewModel);
+            });
+        </script>
+    
+    </body>
+</html>
